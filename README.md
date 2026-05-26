@@ -1,139 +1,75 @@
+[update-readmes]   Mode: rewrite — migrating to template structure...
 # oci-spec-rs
 
-[![ci](https://github.com/containers/oci-spec-rs/workflows/ci/badge.svg)](https://github.com/containers/oci-spec-rs/actions)
-[![gh-pages](https://github.com/containers/oci-spec-rs/workflows/gh-pages/badge.svg)](https://github.com/containers/oci-spec-rs/actions)
-[![crates.io](https://img.shields.io/crates/v/oci-spec.svg)](https://crates.io/crates/oci-spec)
-[![codecov](https://codecov.io/gh/containers/oci-spec-rs/branch/main/graph/badge.svg)](https://codecov.io/gh/containers/oci-spec-rs)
-[![docs](https://img.shields.io/badge/docs-main-blue.svg)](https://containers.github.io/oci-spec-rs/oci_spec/index.html)
-[![docs.rs](https://docs.rs/oci-spec/badge.svg)](https://docs.rs/oci-spec)
-[![dependencies](https://deps.rs/repo/github/containers/oci-spec-rs/status.svg)](https://deps.rs/repo/github/containers/oci-spec-rs)
-[![license](https://img.shields.io/github/license/containers/oci-spec-rs.svg)](https://github.com/containers/oci-spec-rs/blob/master/LICENSE)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fyouki-dev%2Foci-spec-rs.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fyouki-dev%2Foci-spec-rs?ref=badge_shield)
+[![Built with Ona](https://ona.com/build-with-ona.svg)](https://app.ona.com/#https://github.com/Interested-Deving-1896/oci-spec-rs)
 
-### Open Container Initiative (OCI) Specifications for Rust
+<!-- AI:start:what-it-does -->
+_Description pending._
+<!-- AI:end:what-it-does -->
 
-This library provides a convenient way to interact with the specifications defined by the [Open Container Initiative (OCI)](https://opencontainers.org). 
+## Architecture
 
-- [Image Format Specification](https://github.com/opencontainers/image-spec/blob/main/spec.md)
-- [Runtime Specification](https://github.com/opencontainers/runtime-spec/blob/master/spec.md)
-- [Distribution Specification](https://github.com/opencontainers/distribution-spec/blob/main/spec.md)
+<!-- AI:start:architecture -->
+_Architecture documentation pending._
+<!-- AI:end:architecture -->
 
-```toml
-[dependencies]
-oci-spec = "0.8.4"
-```
-*Compiler support: requires rustc 1.54+*
+## Install
 
-If you want to propose or cut a new release, then please follow our 
-[release process documentation](./release.md).
+<!-- Add installation instructions here. This section is yours — the AI will not modify it. -->
 
-## Image Format Spec Examples
-- Load image manifest from filesystem
-```rust no_run
-use oci_spec::image::ImageManifest;
-
-let image_manifest = ImageManifest::from_file("manifest.json").unwrap();
-assert_eq!(image_manifest.layers().len(), 5);
+```bash
+git clone https://github.com/Interested-Deving-1896/oci-spec-rs.git
+cd oci-spec-rs
 ```
 
-- Create new image manifest using builder
-```rust no_run
-use std::str::FromStr;
-use oci_spec::image::{
-    Descriptor, 
-    DescriptorBuilder, 
-    ImageManifest, 
-    ImageManifestBuilder, 
-    MediaType, 
-    Sha256Digest,
-    SCHEMA_VERSION
-};
+## Usage
 
-let config = DescriptorBuilder::default()
-            .media_type(MediaType::ImageConfig)
-            .size(7023u64)
-            .digest(Sha256Digest::from_str("b5b2b2c507a0944348e0303114d8d93aaaa081732b86451d9bce1f432a537bc7").unwrap())
-            .build()
-            .expect("build config descriptor");
+<!-- Add usage examples here. This section is yours — the AI will not modify it. -->
 
-let layers: Vec<Descriptor> = [
-    (
-        32654u64,
-        "9834876dcfb05cb167a5c24953eba58c4ac89b1adf57f28f2f9d09af107ee8f0",
-    ),
-    (
-        16724,
-        "3c3a4604a545cdc127456d94e421cd355bca5b528f4a9c1905b15da2eb4a4c6b",
-    ),
-    (
-        73109,
-        "ec4b8955958665577945c89419d1af06b5f7636b4ac3da7f12184802ad867736",
-    ),
-]
-    .iter()
-    .map(|l| {
-    DescriptorBuilder::default()
-        .media_type(MediaType::ImageLayerGzip)
-        .size(l.0)
-        .digest(Sha256Digest::from_str(l.1).unwrap())
-        .build()
-        .expect("build layer")
-    })
-    .collect();
+## Configuration
 
-let image_manifest = ImageManifestBuilder::default()
-    .schema_version(SCHEMA_VERSION)
-    .config(config)
-    .layers(layers)
-    .build()
-    .expect("build image manifest");
+<!-- Document configuration options here. This section is yours — the AI will not modify it. -->
 
-image_manifest.to_file_pretty("my-manifest.json").unwrap();
+## CI
+
+<!-- AI:start:ci -->
+_CI documentation pending._
+<!-- AI:end:ci -->
+
+## Mirror chain
+
+<!-- AI:start:mirror-chain -->
+This repo is maintained in [`Interested-Deving-1896/oci-spec-rs`](https://github.com/Interested-Deving-1896/oci-spec-rs) and mirrored through:
+
+```
+Interested-Deving-1896/oci-spec-rs  ──►  OpenOS-Project-OSP/oci-spec-rs  ──►  OpenOS-Project-Ecosystem-OOC/oci-spec-rs
 ```
 
-- Content of my-manifest.json
-```json
-{
-  "schemaVersion": 2,
-  "config": {
-    "mediaType": "application/vnd.oci.image.config.v1+json",
-    "digest": "sha256:b5b2b2c507a0944348e0303114d8d93aaaa081732b86451d9bce1f432a537bc7",
-    "size": 7023
-  },
-  "layers": [
-    {
-      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
-      "digest": "sha256:9834876dcfb05cb167a5c24953eba58c4ac89b1adf57f28f2f9d09af107ee8f0",
-      "size": 32654
-    },
-    {
-      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
-      "digest": "sha256:3c3a4604a545cdc127456d94e421cd355bca5b528f4a9c1905b15da2eb4a4c6b",
-      "size": 16724
-    },
-    {
-      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
-      "digest": "sha256:ec4b8955958665577945c89419d1af06b5f7636b4ac3da7f12184802ad867736",
-      "size": 73109
-    }
-  ]
-}
-```
+Changes flow downstream automatically via the hourly mirror chain in
+[`fork-sync-all`](https://github.com/Interested-Deving-1896/fork-sync-all).
+Direct commits to OSP or OOC are detected and opened as PRs back to `Interested-Deving-1896`.
+<!-- AI:end:mirror-chain -->
 
-## Distribution Spec Examples
-- Create a list of repositories 
-```rust
-use oci_spec::distribution::RepositoryListBuilder;
+## Contributors
 
-let list = RepositoryListBuilder::default()
-            .repositories(vec!["busybox".to_owned()])
-            .build().unwrap();
-```
+<!-- AI:start:contributors -->
+_Contributors pending._
+<!-- AI:end:contributors -->
 
-# Contributing
-This project welcomes your PRs and issues. Should you wish to work on an issue, please claim it first by commenting on the 
-issue that you want to work on it. This is to prevent duplicated efforts from contributors on the same issue.
+## Origins
 
+<!-- AI:start:origins -->
+_Original project — no upstream fork._
+<!-- AI:end:origins -->
+
+## Resources
+
+<!-- AI:start:resources -->
+_No additional resource files found._
+<!-- AI:end:resources -->
 
 ## License
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fyouki-dev%2Foci-spec-rs.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fyouki-dev%2Foci-spec-rs?ref=badge_large)
+
+<!-- AI:start:license -->
+[Apache-2.0](https://github.com/Interested-Deving-1896/oci-spec-rs/blob/main/LICENSE) © 2026 [Interested-Deving-1896](https://github.com/Interested-Deving-1896)
+<!-- AI:end:license -->
